@@ -89,3 +89,58 @@ exports.forgetPassword = async (req, res) => {
     message: `Email is sent successfully and Otp is ${otp}`,
   });
 };
+
+//verify OTP
+exports.verifyOpt = async (req, res) => {
+  const { email, otp } = req.body;
+  if (!email || !otp) {
+    return res.status(400).json({
+      message: "Please Enter email and otp",
+    });
+  }
+  const userExitEmail = await User.find({ email });
+  if (userExitEmail.length === 0) {
+    return res.status(400).json({
+      message: "Email is not registered.",
+    });
+  }
+  if (userExitEmail[0].otp !== otp) {
+    res.status(400).json({
+      message: "Please Enter correct OTP.",
+    });
+  } else {
+    //dispose otp
+    userExitEmail[0].otp = undefined;
+    await userExitEmail[0].save();
+    res.status(200).json({
+      message: "OTP is correct.",
+    });
+  }
+};
+
+//resetPassword
+exports.resetPassword = async (req, res) => {
+  const { email, newPassword, confirmPass } = req.body;
+  if (!email || !newPassword || !confirmPass) {
+    return res.status(400).json({
+      message: "Please fill all field.",
+    });
+  }
+  if (newPassword !== confirmPass) {
+    return res.status(400).json({
+      message: "newpassword and confirmPassword donot matched.",
+    });
+  }
+  const userExitEmail = await User.find({ email });
+  if (userExitEmail.length === 0) {
+    return res.status(400).json({
+      message: "Email is not registered.",
+    });
+  }
+
+  userExitEmail[0].password = bcrypt.hashSync(newPassword, 10);
+  await userExitEmail[0].save();
+  res.status(200).json({
+    message: "Password Changed Successfully.",
+  });
+};
