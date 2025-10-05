@@ -1,6 +1,7 @@
 const User = require("../../model/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const sendEmail = require("../../services/sendEmail");
 
 exports.registerUser = async (req, res) => {
   const { email, password, phoneNumber, userName } = req.body;
@@ -63,4 +64,28 @@ exports.loginUser = async (req, res) => {
       message: "Invalid Password",
     });
   }
+};
+
+//forget Password api
+exports.forgetPassword = async (req, res) => {
+  const { email } = req.body;
+  const checkUserEmailExit = await User.find({ email });
+  if (checkUserEmailExit.length === 0) {
+    return res.status(400).json({
+      message: "Please enter the registered Email.",
+    });
+  }
+  //send otp to email
+  const otp = Math.floor(1000 + Math.random() * 9000);
+  checkUserEmailExit[0].otp = otp;
+  await checkUserEmailExit[0].save();
+
+  await sendEmail({
+    email: email,
+    subject: "Reset YOur Password",
+    message: `Your Otp is ${otp}`,
+  });
+  res.json({
+    message: `Email is sent successfully and Otp is ${otp}`,
+  });
 };
