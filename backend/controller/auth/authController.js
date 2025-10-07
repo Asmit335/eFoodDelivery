@@ -29,6 +29,7 @@ exports.registerUser = async (req, res) => {
   });
 };
 
+//login
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -69,6 +70,11 @@ exports.loginUser = async (req, res) => {
 //forget Password api
 exports.forgetPassword = async (req, res) => {
   const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({
+      message: "Please enter the Email.",
+    });
+  }
   const checkUserEmailExit = await User.find({ email });
   if (checkUserEmailExit.length === 0) {
     return res.status(400).json({
