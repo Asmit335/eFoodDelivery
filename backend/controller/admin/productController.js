@@ -1,5 +1,13 @@
 const ProductM = require("../../model/productModel");
 exports.createProduct = async (req, res) => {
+  const file = req.file;
+  let filePath;
+  if (!file) {
+    filePath = "https://www.asmitkhanal.com.np/images/profile-1.jpeg";
+  } else {
+    file = req.file.filename;
+  }
+
   const {
     productName,
     productDescription,
@@ -26,6 +34,7 @@ exports.createProduct = async (req, res) => {
     productStockQuantity,
     productPrice,
     productStatus,
+    productImage: filePath,
   });
   res.status(200).json({
     message: "Product created Successfully.",

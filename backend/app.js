@@ -9,8 +9,10 @@ const productRoute = require("./routes/productRoutes");
 const app = express();
 env.config();
 app.use(cors());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("uploads"));
 
 const PORT = process.env.PORT;
 connectMongoDb();

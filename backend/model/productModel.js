@@ -24,6 +24,9 @@ const productSchema = new Schema(
       enum: ["available", "unavailable"],
       // required: [true, "productStatus is required."],
     },
+    productImage: {
+      type: String,
+    },
   },
   {
     timestamps: true,
