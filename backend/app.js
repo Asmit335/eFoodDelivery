@@ -6,6 +6,7 @@ const connectMongoDb = require("./database/database");
 const authRoute = require("./routes/authRoutes");
 const productRoute = require("./routes/productRoutes");
 const adminUserRoute = require("./routes/adminUserRoute");
+const userReviewRoute = require("./routes/userReviewRoute");
 
 const app = express();
 env.config();
@@ -30,6 +31,7 @@ app.get("/", async (req, res) => {
 app.use("", authRoute);
 app.use("", productRoute);
 app.use("", adminUserRoute);
+app.use("", userReviewRoute);
 
 app.listen(PORT, () => {
   console.log("The server is running in Port:", PORT);
