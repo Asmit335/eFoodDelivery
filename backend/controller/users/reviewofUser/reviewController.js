@@ -1,5 +1,5 @@
-const ProductM = require("../../model/productModel");
-const ReviewM = require("../../model/reviewModel");
+const ProductM = require("../../../model/productModel");
+const ReviewM = require("../../../model/reviewModel");
 
 // Create a review
 exports.createReview = async (req, res) => {
@@ -83,7 +83,7 @@ exports.getMyReview = async (req, res) => {
   } else {
     res.status(200).json({
       message: "Review fetched Successfully.",
-      reviews,
+      data: reviews,
     });
   }
 };

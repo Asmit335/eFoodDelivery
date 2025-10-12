@@ -2,13 +2,14 @@ const express = require("express");
 
 const isAuthenticated = require("../../middleware/isAuthenticated");
 const { catchAsync } = require("../../services/catchAsync");
-const {
-  getMyReview,
-  createReview,
-  deleteReview,
-  getProductReview,
-} = require("../../controller/reviewofUser/reviewController");
+
 const restricTocreateProduct = require("../../middleware/restrictTocreate");
+const {
+  getProductReview,
+  deleteReview,
+  createReview,
+  getMyReview,
+} = require("../../controller/users/reviewofUser/reviewController");
 const router = express.Router();
 
 router.route("/reviews").get(isAuthenticated, catchAsync(getMyReview));

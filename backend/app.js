@@ -7,7 +7,7 @@ const authRoute = require("./routes/auth/authRoutes");
 const productRoute = require("./routes/admin/productRoutes");
 const adminUserRoute = require("./routes/admin/adminUserRoute");
 const userReviewRoute = require("./routes/user/userReviewRoute");
-
+const profileRoute = require("./routes/user/profileRoute");
 const app = express();
 env.config();
 app.use(cors());
@@ -30,8 +30,9 @@ app.get("/", async (req, res) => {
 //user register/signup api, user login api
 app.use("", authRoute);
 app.use("", productRoute);
-app.use("", adminUserRoute);
+app.use("/admin", adminUserRoute);
 app.use("", userReviewRoute);
+app.use("", profileRoute);
 
 app.listen(PORT, () => {
   console.log("The server is running in Port:", PORT);
