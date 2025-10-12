@@ -1,5 +1,6 @@
 const ProductM = require("../../model/productModel");
 const fs = require("fs");
+
 exports.createProduct = async (req, res) => {
   try {
     const file = req.file;
@@ -44,41 +45,6 @@ exports.createProduct = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       message: "Something went wrong.",
-    });
-  }
-};
-
-exports.getProducts = async (req, res) => {
-  const products = await ProductM.find();
-  if (products.length === 0) {
-    res.status(400).json({
-      message: "Product Not found",
-      products: [],
-    });
-  } else {
-    res.status(200).json({
-      message: "Products fetched Successfully.",
-      products,
-    });
-  }
-};
-
-exports.getProduct = async (req, res) => {
-  const { id } = req.params;
-  if (!id) {
-    return res.status(400).json({
-      message: "Please give productID .",
-    });
-  }
-  const product = await ProductM.findById({ _id: id });
-  if (!product) {
-    res.status(400).json({
-      message: "No product found with the given productID .",
-    });
-  } else {
-    res.status(200).json({
-      message: "Product fetched Successfully.",
-      product,
     });
   }
 };

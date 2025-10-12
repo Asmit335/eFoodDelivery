@@ -72,10 +72,35 @@ exports.getProductReview = async (req, res) => {
   });
 };
 
+exports.getMyReview = async (req, res) => {
+  const userId = req.user.id;
+  const reviews = await ReviewM.find({ userId });
+  if (reviews.length == 0) {
+    res.status(400).json({
+      message: "You haven't  given review a to any products.",
+      reviews: [],
+    });
+  } else {
+    res.status(200).json({
+      message: "Review fetched Successfully.",
+      reviews,
+    });
+  }
+};
+
 // Delete a review
 exports.deleteReview = async (req, res) => {
   const reviewId = req.params.id;
 
+  //check if that user created that review or not
+  const userId = req.user.id;
+  const takeReviewId = await ReviewM.findById(reviewId);
+  const ownerIDOfReview = takeReviewId.userId;
+  if (ownerIDOfReview !== userId) {
+    return res.status(400).json({
+      message: "You are not allowed to perform this action",
+    });
+  }
   if (!reviewId) {
     return res.status(400).json({
       message: "Please provide a review ID.",

@@ -3,10 +3,10 @@ const cors = require("cors");
 const env = require("dotenv");
 const User = require("./model/userModel");
 const connectMongoDb = require("./database/database");
-const authRoute = require("./routes/authRoutes");
-const productRoute = require("./routes/productRoutes");
-const adminUserRoute = require("./routes/adminUserRoute");
-const userReviewRoute = require("./routes/userReviewRoute");
+const authRoute = require("./routes/auth/authRoutes");
+const productRoute = require("./routes/admin/productRoutes");
+const adminUserRoute = require("./routes/admin/adminUserRoute");
+const userReviewRoute = require("./routes/user/userReviewRoute");
 
 const app = express();
 env.config();

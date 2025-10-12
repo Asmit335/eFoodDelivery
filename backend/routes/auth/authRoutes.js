@@ -7,8 +7,8 @@ const {
   forgetPassword,
   verifyOpt,
   resetPassword,
-} = require("../controller/auth/authController");
-const { catchAsync } = require("../services/catchAsync");
+} = require("../../controller/auth/authController");
+const { catchAsync } = require("../../services/catchAsync");
 
 router.route("/register").post(catchAsync(registerUser));
 router.route("/login").post(catchAsync(loginUser));

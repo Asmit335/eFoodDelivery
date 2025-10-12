@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { getUsers, deleteUser } = require("../controller/users/userController");
-const restricTocreateProduct = require("../middleware/restrictTocreate");
-const isAuthenticated = require("../middleware/isAuthenticated");
+const {
+  getUsers,
+  deleteUser,
+} = require("../../controller/users/userController");
+const restricTocreateProduct = require("../../middleware/restrictTocreate");
+const isAuthenticated = require("../../middleware/isAuthenticated");
 
 router
   .route("/user")
