@@ -28,7 +28,14 @@ const userSchema = new Schema(
     },
     otp: {
       type: Number,
+      select: false,
     },
+    cart: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
   },
   {
     timestamps: true,

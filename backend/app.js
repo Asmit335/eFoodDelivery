@@ -8,6 +8,8 @@ const productRoute = require("./routes/admin/productRoutes");
 const adminUserRoute = require("./routes/admin/adminUserRoute");
 const userReviewRoute = require("./routes/user/userReviewRoute");
 const profileRoute = require("./routes/user/profileRoute");
+const cartRoute = require("./routes/user/cartRoute");
+
 const app = express();
 env.config();
 app.use(cors());
@@ -33,6 +35,7 @@ app.use("", productRoute);
 app.use("/admin", adminUserRoute);
 app.use("", userReviewRoute);
 app.use("", profileRoute);
+app.use("/cart", cartRoute);
 
 app.listen(PORT, () => {
   console.log("The server is running in Port:", PORT);
