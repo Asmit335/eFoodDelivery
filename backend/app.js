@@ -9,7 +9,7 @@ const adminUserRoute = require("./routes/admin/adminUserRoute");
 const userReviewRoute = require("./routes/user/userReviewRoute");
 const profileRoute = require("./routes/user/profileRoute");
 const cartRoute = require("./routes/user/cartRoute");
-const admingetOrderRoute = require("./routes/admin/orderadminRoute");
+const admingetOrderRoute = require("./routes/admin/adminOrderRoute");
 const userOrderRouter = require("./routes/user/orderRoute");
 
 const app = express();
