@@ -11,6 +11,7 @@ const profileRoute = require("./routes/user/profileRoute");
 const cartRoute = require("./routes/user/cartRoute");
 const admingetOrderRoute = require("./routes/admin/adminOrderRoute");
 const userOrderRouter = require("./routes/user/orderRoute");
+const khaltiPaymentRouter = require("./routes/user/paymentRoute");
 
 const app = express();
 env.config();
@@ -40,6 +41,7 @@ app.use("", profileRoute);
 app.use("/cart", cartRoute);
 app.use("/admin/order", admingetOrderRoute);
 app.use("/order", userOrderRouter);
+app.use("/payment", khaltiPaymentRouter);
 
 app.listen(PORT, () => {
   console.log("The server is running in Port:", PORT);

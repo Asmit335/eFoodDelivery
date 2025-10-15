@@ -3,7 +3,7 @@ exports.catchAsync = (fn) => {
     fn(req, res, next).catch((err) => {
       return res.status(500).json({
         message: "Something went wrong",
-        fullError: err,
+        fullError: err.message,
       });
     });
   };
