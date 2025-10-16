@@ -51,7 +51,13 @@ const server = app.listen(PORT, () => {
 const io = new Server(server);
 
 io.on("connection", (socket) => {
-  socket.on("join", () => {
-    console.log("A user is connected.");
+  // console.log("A user is connected.");
+  socket.on("join", (data) => {
+    console.log(data);
   });
 });
+
+function getSocketIo() {
+  return io;
+}
+module.exports.getSocketIo = getSocketIo;
