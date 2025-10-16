@@ -12,6 +12,7 @@ const cartRoute = require("./routes/user/cartRoute");
 const admingetOrderRoute = require("./routes/admin/adminOrderRoute");
 const userOrderRouter = require("./routes/user/orderRoute");
 const khaltiPaymentRouter = require("./routes/user/paymentRoute");
+const { Server } = require("socket.io");
 
 const app = express();
 env.config();
@@ -43,6 +44,14 @@ app.use("/admin/order", admingetOrderRoute);
 app.use("/order", userOrderRouter);
 app.use("/payment", khaltiPaymentRouter);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log("The server is running in Port:", PORT);
+});
+
+const io = new Server(server);
+
+io.on("connection", (socket) => {
+  socket.on("join", () => {
+    console.log("A user is connected.");
+  });
 });
