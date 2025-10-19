@@ -1,8 +1,13 @@
 import React from 'react'
+import Hero from '../heroSection/Hero'
+import Product from '../ProductCard/Product'
 
 const Home = () => {
   return (
-    <div className=" text-red-600 text-center text-7xl p-48">this is a Home</div>
+<>
+  <Hero/>
+  <Product/>
+</>
   )
 }
 
