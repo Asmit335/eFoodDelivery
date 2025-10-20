@@ -20,8 +20,8 @@ const upload = multer({ storage });
 router
   .route("/createproduct")
   .post(
-    isAuthenticated,
-    restricTocreateProduct("admin"),
+    // isAuthenticated,
+    // restricTocreateProduct("admin"),
     upload.single("productImage"),
     createProduct
   )
