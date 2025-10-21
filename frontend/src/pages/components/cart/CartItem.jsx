@@ -1,8 +1,20 @@
-import React from 'react'
-import { useSelector } from "react-redux"
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from "react-redux"
+import { remove } from '../../../store/cartSlice'
 
 const CartItem = () => {
   const products=useSelector((state)=> state.cart)
+  const [count, setCount] = useState(0)
+  const dispatch=useDispatch()
+
+  const removeItemhandler=(pId)=>{
+    dispatch(remove(pId))
+  }
+
+  const handleCounter=()=>{
+    setCount(count+1)
+  }
+  
   return (
     <>
     <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
@@ -18,19 +30,20 @@ const CartItem = () => {
                <div key={pro._id} className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6">
             <div className="space-y-4 md:flex md:items-center md:justify-between md:gap-6 md:space-y-0">
               <a href="#" className="shrink-0 md:order-1">
-                <img className="h-20 w-20 dark:hidden" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg" alt="imac image" />
-                <img className="hidden h-20 w-20 dark:block" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg" alt="imac image" />
+                <img className="hidden h-20 w-20 dark:block" src={pro.productImage} alt="imac image" />
               </a>
 
               <label htmlFor="counter-input" className="sr-only">Choose quantity:</label>
               <div className="flex items-center justify-between md:order-3 md:justify-end">
                 <div className="flex items-center">
-                  <button type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
+
+
+                  <button type="button" id="decrement-button" onClick={handleCounter} data-input-counter-decrement="counter-input" className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
                     <svg className="h-2.5 w-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
+                      <path  stroke="currentColor"  strokeLinecap="round"  strokeLinejoin="round" strokeWidth="2"  d="M1 1h16"/>
                     </svg>
                   </button>
-                  <input type="text" id="counter-input" data-input-counter className="w-10 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white" placeholder="" value="2" required />
+                  <input type="text" id="counter-input" data-input-counter className="w-10 shrink-0 border-0 bg-transparent text-center text-sm font-medium text-gray-900 focus:outline-none focus:ring-0 dark:text-white" placeholder="" value="1" required />
                   <button type="button" id="increment-button" data-input-counter-increment="counter-input" className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
                     <svg className="h-2.5 w-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
@@ -38,7 +51,7 @@ const CartItem = () => {
                   </button>
                 </div>
                 <div className="text-end md:order-4 md:w-32">
-                  <p className="text-base font-bold text-gray-900 dark:text-white">$1,499</p>
+                  <p className="text-base font-bold text-gray-900 dark:text-white">{pro.productPrice}</p>
                 </div>
               </div>
 
@@ -53,7 +66,7 @@ const CartItem = () => {
                     Add to Favorites
                   </button>
 
-                  <button type="button" className="inline-flex items-center text-sm font-medium text-red-600 hover:underline dark:text-red-500">
+                  <button type="button" onClick={()=>removeItemhandler(pro._id)} className="inline-flex items-center text-sm font-medium text-red-600 hover:underline dark:text-red-500">
                     <svg className="mr-1.5 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
                     </svg>

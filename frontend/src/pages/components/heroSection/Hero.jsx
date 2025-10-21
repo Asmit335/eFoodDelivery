@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-
+import { Link } from 'react-router-dom'
 const Hero = () => {
   const [title, setTitle] = useState("We are always here to serve you.");
   const [showMenu, setShowMenu] = useState(false);
@@ -80,7 +80,9 @@ const Hero = () => {
           </div>
 
    <div className="relative">
-  <svg
+
+    <Link to="/cart">
+      <svg
     className="w-8 h-8 text-white"
     fill="none"
     stroke="currentColor"
@@ -94,6 +96,7 @@ const Hero = () => {
       d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
     />
   </svg>
+  </Link>
   <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
     {productItems.length}
   </span>
