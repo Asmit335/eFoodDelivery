@@ -1,23 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { useDispatch } from "react-redux"
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from "react-redux"
 import { add } from '../../../store/cartSlice'
+import { fetchProducts } from '../../../store/productSlice'
+
 const Product = () => {
-  const [product, setproduct] = useState([])
   const dispatch=useDispatch()
-  const fetchProduct=async()=>{
-    const response=await axios.get("http://localhost:3000/createproduct")
-    if(response.status===200){
-      setproduct(response.data.products)
-    }
-  }
+  const {data:products,status}=useSelector((state)=>state.product)
+
 
   useEffect(()=>{
-    fetchProduct()
+    dispatch(fetchProducts())
   },[])
 
   const addToCart=(item)=>{
     dispatch(add(item))
+  }
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (status === "error") {
+    return <div>Error loading products. Please try again later.</div>;
   }
 
   return (
@@ -25,7 +29,7 @@ const Product = () => {
 <h1 className="text-3xl font-bold text-white  m-6">Our Latest Product</h1>
 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
      {
-      product.map((pro)=>{
+      products.map((pro)=>{
         return(
            <div key={pro._id} className="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
         <a className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="#">
