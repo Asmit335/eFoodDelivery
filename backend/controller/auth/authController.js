@@ -18,7 +18,7 @@ exports.registerUser = async (req, res) => {
     });
   }
 
-  await User.create({
+  const user = await User.create({
     email,
     password: bcrypt.hashSync(password, 10),
     userName,
@@ -26,6 +26,7 @@ exports.registerUser = async (req, res) => {
   });
   res.status(200).json({
     message: "User is created.",
+    data: user,
   });
 };
 

@@ -10,8 +10,8 @@ const statuses = Object.freeze({
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    data: [],
-    status: statuses.success,
+    data: {},
+    status: "",
   },
   reducers: {
     setUser(state, action) {

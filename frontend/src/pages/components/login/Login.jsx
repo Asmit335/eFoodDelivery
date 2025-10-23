@@ -1,5 +1,9 @@
 import React from "react"
+import { useSelector } from "react-redux"
 export default function Login() {
+  const {data, status}=useSelector((state)=>state.auth)
+  console.log(data.userName);
+  
   return (
     <>
           <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -9,7 +13,8 @@ export default function Login() {
             src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
             className="mx-auto h-10 w-auto"
           />
-          <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">Sign in to your account</h2>
+          <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">{data.userName + " "}
+          Sign in to your account</h2> 
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">

@@ -28,11 +28,11 @@ export default function Register() {
  }
  
  useEffect(()=>{
-     if (status === "loading") {
+     if (status === "success") {
    return navigate("/login")
   }
    if (status === "error") {
-   return navigate("/register")
+    alert("Something went wrong. Try again later.")
   }
  },[status,navigate])
 
