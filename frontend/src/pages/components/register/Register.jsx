@@ -1,6 +1,41 @@
-import React from "react"
-import Login from "../login/Login"
+import React, { useEffect, useState } from "react"
+import {useDispatch, useSelector} from "react-redux"
+import { registerUser } from "../../../store/authSlice"
+import {useNavigate} from "react-router-dom"
 export default function Register() {
+  const dispatch=useDispatch()
+  const {status}=useSelector((state)=>state.auth)
+  const navigate=useNavigate()
+  const [userData,setUserData]=useState({
+    userName:"",
+    email:"",
+    password:"",
+    phoneNumber:""
+  })
+
+  const handleChange=(e)=>{
+   const {name,value}= e.target
+   setUserData((preData)=>({
+    ...preData,
+    [name]:value
+   }))
+  }
+
+  const handleSubmit=(e)=>{
+    e.preventDefault()
+    dispatch(registerUser(userData))
+    console.log(userData);  
+ }
+ 
+ useEffect(()=>{
+     if (status === "loading") {
+   return navigate("/login")
+  }
+   if (status === "error") {
+   return navigate("/register")
+  }
+ },[status,navigate])
+
   return (
     <>
           <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -14,16 +49,18 @@ export default function Register() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6">
+          <form onSubmit={handleSubmit} method="POST" className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm/6 font-medium text-gray-100">
+              <label htmlFor="userName" className="block text-sm/6 font-medium text-gray-100">
               UserName
               </label>
               <div className="mt-2">
                 <input
                   id="name"
-                  name="name"
+                  name="userName"
                   type="name"
+                  onChange={handleChange}
+                  value={userData.userName}
                   required
                   autoComplete="name"
                   className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
@@ -39,6 +76,8 @@ export default function Register() {
                   id="email"
                   name="email"
                   type="email"
+                  onChange={handleChange}
+                  value={userData.email}
                   required
                   autoComplete="email"
                   className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
@@ -46,6 +85,26 @@ export default function Register() {
               </div>
             </div>
 
+             <div>
+              <div className="flex items-center justify-between">
+                <label htmlFor="number" className="block text-sm/6 font-medium text-gray-100">
+                 Phone Number
+                </label>
+              
+              </div>
+              <div className="mt-2">
+                <input
+                  id="number"
+                  name="phoneNumber"
+                  type="text"
+                  onChange={handleChange}
+                  value={userData.phoneNumber}
+                  required
+                  autoComplete="current-password"
+                  className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+                />
+              </div>
+            </div>
             <div>
               <div className="flex items-center justify-between">
                 <label htmlFor="password" className="block text-sm/6 font-medium text-gray-100">
@@ -58,30 +117,15 @@ export default function Register() {
                   id="password"
                   name="password"
                   type="password"
+                  onChange={handleChange}
+                  value={userData.password}
                   required
                   autoComplete="current-password"
                   className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                 />
               </div>
             </div>
-            <div>
-              <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm/6 font-medium text-gray-100">
-                 Confirm Password
-                </label>
-              
-              </div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  autoComplete="current-password"
-                  className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
-                />
-              </div>
-            </div>
+           
 
             <div>
               <button

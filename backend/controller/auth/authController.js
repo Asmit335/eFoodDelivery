@@ -6,14 +6,14 @@ const sendEmail = require("../../services/sendEmail");
 exports.registerUser = async (req, res) => {
   const { email, password, phoneNumber, userName } = req.body;
   if (!email || !password || !phoneNumber || !userName) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "Please fill all the details.",
     });
   }
 
   const userEmailFound = await User.find({ email });
   if (userEmailFound.length > 0) {
-    res.status(400).json({
+    return res.status(400).json({
       message: "User email already existed. Please fill new email.",
     });
   }

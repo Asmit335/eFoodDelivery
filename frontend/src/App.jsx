@@ -1,24 +1,28 @@
 import React from 'react';
 // import router from './router';
-// import Navbar from './global/component/navbar/Navbar';
 import Footer from './global/component/footer/Footer';
 import { Provider } from "react-redux"
 import store from './store/store';
 import {  BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from './pages/components/home/Home';
 import CartItem from './pages/components/cart/CartItem';
+import Login from './pages/components/login/Login';
+import Register from './pages/components/register/Register';
+import Navbar from './global/component/navbar/Navbar';
 
 function App() {
   return (
     <div>
     <Provider store={store}>
      {/* <RouterProvider router={router}/> */}
-        {/* <Navbar/> */}
         <BrowserRouter>
+        <Navbar/>
         <Routes>
       <Route path='/' element={<Home/>}/>
       <Route path='/cart' element={<CartItem/>}/>
       <Route path='/footer' element={<Footer/>}/>
+      <Route path='/login' element={<Login/>}/>
+      <Route path='/register' element={<Register/>}/>
       </Routes>
         </BrowserRouter>
     </Provider>

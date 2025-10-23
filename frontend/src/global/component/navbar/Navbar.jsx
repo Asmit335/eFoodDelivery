@@ -1,135 +1,106 @@
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import React from 'react'
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-const navigation = [
-  { name: 'Dashboard', href: '/', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Login', href: '/login', current: false },
-  { name: 'Register', href: '/register', current: false },
-]
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
-
-export default function Navbar() {
+const Navbar = () => {
+    const [toggle, setToggle] = useState(false);
+    const productItems = useSelector((state) => state.cart);
+    const toggleClass = () => {
+    const closeAfterClick = document.querySelector("#nav-icon4");
+    closeAfterClick?.classList?.toggle("open");
+  };
   return (
-    <Disclosure
-      as="nav"
-      className="relative bg-blue-800 after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-blue"
-    >
-      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div className="relative flex h-16 items-center justify-between">
-          <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-            {/* Mobile menu button*/}
-            <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-white/5 hover:text-white focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-500">
-              <span className="absolute -inset-0.5" />
-              <span className="sr-only">Open main menu</span>
-              <Bars3Icon aria-hidden="true" className="block size-6 group-data-open:hidden" />
-              <XMarkIcon aria-hidden="true" className="hidden size-6 group-data-open:block" />
-            </DisclosureButton>
-          </div>
-          <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-            <div className="flex shrink-0 items-center">
-              <img
-                alt="Your Company"
-                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                className="h-8 w-auto"
-              />
+    <>   <div className="flex justify-between sm:justify-end sm:gap-5 items-center w-full px-8">
+          <button
+            className="w-12 h-12 relative focus:outline-none sm:hidden overscroll-none top-2.5"
+            onClick={() => {
+              toggleClass();
+              setToggle(!toggle);
+            }}
+            aria-label="Toggle Menu"
+          >
+            <div className="block w-5 absolute left-5 top-1/3 transform -translate-x-1/2 -translate-y-1/2 z-50">
+              <span
+                className={`block absolute h-0.5 w-7 text-white bg-current transform transition duration-300 ease-in-out ${
+                  toggle ? "rotate-45" : "-translate-y-2"
+                }`}
+              ></span>
+              <span
+                className={`block absolute h-0.5 w-7 text-white bg-current transform transition duration-300 ease-in-out ${
+                  toggle && "opacity-0"
+                }`}
+              ></span>
+              <span
+                className={`block absolute h-0.5 w-7 text-white bg-current transform transition duration-300 ease-in-out ${
+                  toggle ? "-rotate-45" : "translate-y-2"
+                }`}
+              ></span>
             </div>
-            <div className="hidden sm:ml-6 sm:block">
-              <div className="flex space-x-4">
-                {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    aria-current={item.current ? 'page' : undefined}
-                    className={classNames(
-                      item.current ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white',
-                      'rounded-md px-3 py-2 text-sm font-medium',
-                    )}
-                  >
-                    {item.name}
-                  </a>
-                ))}
+          </button>
+
+          <div
+            className={`border-[2px] z-30 border-orange-600 bg-[#050C24] rounded-xl absolute top-[70px] left-5 block sm:hidden p-0.5 ${
+              toggle ? "visible" : "invisible"
+            }`}
+          >
+            <div className="p-3 rounded-xl min-w-[180px] text-center">
+              <div className="text-white z-50 text-2xl font-normal font-hindVadodara leading-6 tracking-[0.01] cursor-pointer hover:text-orange-600">
+               <Link to="/">Home</Link>
+              </div>
+              <div className="mt-4 text-white z-50 text-2xl font-normal font-hindVadodara leading-6 tracking-[0.04] cursor-pointer hover:text-orange-600">
+                Menu
+              </div>
+              <div className="mt-4 text-white z-[100] text-2xl font-normal font-hindVadodara leading-6 tracking-[0.01] cursor-pointer hover:text-orange-600">
+                Pricing
               </div>
             </div>
           </div>
-          <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <button
-              type="button"
-              className="relative rounded-full p-1 text-gray-400 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500"
-            >
-              <span className="absolute -inset-1.5" />
-              <span className="sr-only">View notifications</span>
-              <BellIcon aria-hidden="true" className="size-6" />
+
+          <div className="sm:flex gap-5 items-center hidden">
+            <div className="capitalize text-white text-lg font-semibold hover:text-orange-600 cursor-pointer">
+              <Link to="/">Home</Link>
+            </div>
+            <div className="capitalize cursor-pointer text-lg font-semibold text-white hover:text-orange-600">
+              Menu
+            </div>
+            <div className="capitalize cursor-pointer text-lg font-semibold text-white hover:text-orange-600">
+              Pricing
+            </div>
+            <button className="bg-transparent border text-lg font-semibold border-orange-600 py-1.5 px-5 rounded-md h-max text-white hover:bg-orange-600">
+            <Link to="/login">Login</Link>
             </button>
-
-            {/* Profile dropdown */}
-            <Menu as="div" className="relative ml-3">
-              <MenuButton className="relative flex rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
-                <span className="absolute -inset-1.5" />
-                <span className="sr-only">Open user menu</span>
-                <img
-                  alt=""
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  className="size-8 rounded-full bg-gray-800 outline -outline-offset-1 outline-white/10"
-                />
-              </MenuButton>
-
-              <MenuItems
-                transition
-                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-gray-800 py-1 outline -outline-offset-1 outline-white/10 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
-              >
-                <MenuItem>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-300 data-focus:bg-white/5 data-focus:outline-hidden"
-                  >
-                    Your profile
-                  </a>
-                </MenuItem>
-                <MenuItem>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-300 data-focus:bg-white/5 data-focus:outline-hidden"
-                  >
-                    Settings
-                  </a>
-                </MenuItem>
-                <MenuItem>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-300 data-focus:bg-white/5 data-focus:outline-hidden"
-                  >
-                    Sign out
-                  </a>
-                </MenuItem>
-              </MenuItems>
-            </Menu>
           </div>
-        </div>
-      </div>
 
-      <DisclosurePanel className="sm:hidden">
-        <div className="space-y-1 px-2 pt-2 pb-3">
-          {navigation.map((item) => (
-            <DisclosureButton
-              key={item.name}
-              as="a"
-              href={item.href}
-              aria-current={item.current ? 'page' : undefined}
-              className={classNames(
-                item.current ? 'bg-gray-950/50 text-white' : 'text-gray-300 hover:bg-white/5 hover:text-white',
-                'block rounded-md px-3 py-2 text-base font-medium',
-              )}
-            >
-              {item.name}
-            </DisclosureButton>
-          ))}
+   <div className="relative">
+
+    <Link to="/cart">
+      <svg
+    className="w-8 h-8 text-white"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+    />
+  </svg>
+  </Link>
+   <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+    {productItems.length}
+  </span>
+</div>
+          <button className="block sm:hidden bg-transparent border border-orange-600 py-1.5 px-5 rounded-md h-max text-white hover:bg-orange-600">
+          <Link to="/login">Login</Link>
+          </button>
         </div>
-      </DisclosurePanel>
-    </Disclosure>
+        
+        </>
   )
 }
+
+export default Navbar
