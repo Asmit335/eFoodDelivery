@@ -1,8 +1,42 @@
 import React from "react"
-import { useSelector } from "react-redux"
+// import { useEffect } from "react"
+import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { loginUser } from "../../../store/authSlice"
 export default function Login() {
-  const {data, status}=useSelector((state)=>state.auth)
-  console.log(data.userName);
+  const {data,status,token}=useSelector((state)=>state.auth)
+  const navigate=useNavigate()
+  const dispatch=useDispatch()
+  const [userData,setUserData]=useState({
+    email:"",
+    password:""
+  })
+
+  const handleChange=(e)=>{
+    const {name,value}=e.target
+    setUserData((pre)=>({
+      ...pre,
+      [name]:value
+    }))
+  }
+
+  const handleSubmit=(e)=>{
+    e.preventDefault()
+    dispatch(loginUser(userData))
+    if(status==="success"){
+      localStorage.setItem("token",token)
+    return navigate("/")
+     }
+    if(status==="error"){
+    alert("Something went Wrong. Please try again.")
+    return
+    }
+  }
+
+  // useEffect(()=>{
+  
+  // },[status,navigate])
   
   return (
     <>
@@ -18,7 +52,7 @@ export default function Login() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6">
+          <form onSubmit={handleSubmit} method="POST" className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm/6 font-medium text-gray-100">
                 Email address
@@ -28,6 +62,8 @@ export default function Login() {
                   id="email"
                   name="email"
                   type="email"
+                  value={userData.email}
+                  onChange={handleChange}
                   required
                   autoComplete="email"
                   className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
@@ -51,6 +87,8 @@ export default function Login() {
                   id="password"
                   name="password"
                   type="password"
+                  value={userData.password}
+                  onChange={handleChange}
                   required
                   autoComplete="current-password"
                   className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"

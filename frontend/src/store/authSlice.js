@@ -12,6 +12,7 @@ const authSlice = createSlice({
   initialState: {
     data: {},
     status: "",
+    token: "",
   },
   reducers: {
     setUser(state, action) {
@@ -20,10 +21,13 @@ const authSlice = createSlice({
     setStatus(state, action) {
       state.status = action.payload;
     },
+    setToken(state, action) {
+      state.token = action.payload;
+    },
   },
 });
 
-export const { setUser, setStatus } = authSlice.actions;
+export const { setUser, setStatus, setToken } = authSlice.actions;
 export default authSlice.reducer;
 
 export const registerUser = (data) => async (dispatch) => {
@@ -35,5 +39,18 @@ export const registerUser = (data) => async (dispatch) => {
   } catch (error) {
     dispatch(setStatus(statuses.Error));
     console.log("Error", error);
+  }
+};
+
+export const loginUser = (data) => async (dispatch) => {
+  dispatch(setStatus(statuses.loading));
+  try {
+    const response = await axios.post("http://localhost:3000/login", data);
+    dispatch(setToken(response.data.token));
+    dispatch(setUser(response.data.data));
+    dispatch(setStatus(statuses.success));
+  } catch (error) {
+    dispatch(setStatus(statuses.Error));
+    console.log(error);
   }
 };
