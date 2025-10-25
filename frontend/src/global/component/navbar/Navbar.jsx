@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
+    const {data:userData}=useSelector((state)=>state.auth)
     const [toggle, setToggle] = useState(false);
     const productItems = useSelector((state) => state.cart);
     const toggleClass = () => {
@@ -64,16 +65,28 @@ const Navbar = () => {
             <div className="capitalize cursor-pointer text-lg font-semibold text-white hover:text-orange-600">
               Menu
             </div>
-            <div className="capitalize cursor-pointer text-lg font-semibold text-white hover:text-orange-600">
-              Pricing
-            </div>
-            <button className="bg-transparent border text-lg font-semibold border-orange-600 py-1.5 px-5 rounded-md h-max text-white hover:bg-orange-600">
-            <Link to="/login">Login</Link>
-            </button>
+            
+          {
+          (userData?.length === 0 && 
+          (!localStorage.getItem("token") || localStorage.getItem("token") === "")) ? (
+          <div className="flex gap-3">
+          <button className="bg-transparent border text-lg font-semibold border-orange-600 py-1.5 px-5 rounded-md h-max text-white hover:bg-orange-600">
+        <Link to="/register">Register</Link>
+          </button>
+          <button className="bg-transparent border text-lg font-semibold border-orange-600 py-1.5 px-5 rounded-md h-max text-white hover:bg-orange-600">
+          <Link to="/login">Login</Link>
+          </button>
           </div>
+            ) : 
+            (
+            <button className="bg-transparent border text-lg font-semibold border-orange-600 py-1.5 px-5 rounded-md h-max text-white hover:bg-orange-600">
+            <Link to="/logout">LogOut</Link>
+            </button>
+            )
+}        
+</div>
 
    <div className="relative">
-
     <Link to="/cart">
       <svg
     className="w-8 h-8 text-white"
@@ -94,10 +107,12 @@ const Navbar = () => {
     {productItems.length}
   </span>
 </div>
+
           <button className="block sm:hidden bg-transparent border border-orange-600 py-1.5 px-5 rounded-md h-max text-white hover:bg-orange-600">
           <Link to="/login">Login</Link>
           </button>
-        </div>
+
+</div>
         
         </>
   )

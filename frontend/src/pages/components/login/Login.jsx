@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { loginUser } from "../../../store/authSlice"
 export default function Login() {
-  const {data,status,token}=useSelector((state)=>state.auth)
+  const {data,status}=useSelector((state)=>state.auth)
+  console.log(data);
   const navigate=useNavigate()
   const dispatch=useDispatch()
   const [userData,setUserData]=useState({
@@ -24,10 +25,8 @@ export default function Login() {
   const handleSubmit=(e)=>{
     e.preventDefault()
     dispatch(loginUser(userData))
-    if(status==="success"){
-      localStorage.setItem("token",token)
-    return navigate("/")
-     }
+    navigate("/")
+    
     if(status==="error"){
     alert("Something went Wrong. Please try again.")
     return
@@ -47,7 +46,7 @@ export default function Login() {
             src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
             className="mx-auto h-10 w-auto"
           />
-          <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">{data.userName + " "}
+          <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">
           Sign in to your account</h2> 
         </div>
 

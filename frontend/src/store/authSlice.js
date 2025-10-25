@@ -10,7 +10,7 @@ const statuses = Object.freeze({
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    data: {},
+    data: [],
     status: "",
     token: "",
   },
@@ -46,9 +46,10 @@ export const loginUser = (data) => async (dispatch) => {
   dispatch(setStatus(statuses.loading));
   try {
     const response = await API.post("/login", data);
-    dispatch(setToken(response.data.token));
     dispatch(setUser(response.data.data));
+    dispatch(setToken(response.data.token));
     dispatch(setStatus(statuses.success));
+    localStorage.setItem("token", response.data.token);
   } catch (error) {
     dispatch(setStatus(statuses.Error));
     console.log(error);

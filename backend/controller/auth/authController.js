@@ -41,26 +41,26 @@ exports.loginUser = async (req, res) => {
   }
 
   //email check
-  const user = await User.find({ email });
+  const userFound = await User.find({ email });
 
-  if (user.length === 0) {
+  if (userFound.length === 0) {
     return res.status(400).json({
       message: "Email is not registered.",
     });
   }
 
   //password check
-  const isPasswordCorrect = bcrypt.compareSync(password, user[0].password);
+  const isPasswordCorrect = bcrypt.compareSync(password, userFound[0].password);
 
   if (isPasswordCorrect) {
     //generate token
-    const token = jwt.sign({ id: user[0]._id }, process.env.JWTtoken, {
+    const token = jwt.sign({ id: userFound[0]._id }, process.env.JWTtoken, {
       expiresIn: "1d",
     });
     res.status(200).json({
-      message: "User LoginedIn Successfully",
-      token,
-      data: user,
+      message: "User LoggedIn Successfully",
+      data: userFound,
+      token: token,
     });
   } else {
     res.status(400).json({
