@@ -9,6 +9,7 @@ import CartItem from './pages/components/cart/CartItem';
 import Login from './pages/components/login/Login';
 import Register from './pages/components/register/Register';
 import Navbar from './global/component/navbar/Navbar';
+import ProductDetails from './pages/productDetail/ProductDetails';
 
 function App() {
   return (
@@ -23,7 +24,9 @@ function App() {
       <Route path='/footer' element={<Footer/>}/>
       <Route path='/login' element={<Login/>}/>
       <Route path='/register' element={<Register/>}/>
+      <Route path='/product/:id' element={<ProductDetails/>}/>
       </Routes>
+      <Footer/>
         </BrowserRouter>
     </Provider>
     </div>

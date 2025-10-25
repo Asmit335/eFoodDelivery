@@ -2,11 +2,10 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { add } from '../../../store/cartSlice'
 import { fetchProducts } from '../../../store/productSlice'
-
+import {Link} from "react-router-dom"
 const Product = () => {
   const dispatch=useDispatch()
   const {data:products,status}=useSelector((state)=>state.product)
-
 
   useEffect(()=>{
     dispatch(fetchProducts())
@@ -32,14 +31,14 @@ const Product = () => {
       products.map((pro)=>{
         return(
            <div key={pro._id} className="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-        <a className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="#">
+        <Link to={`/product/${pro._id}`} className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" >
           <img className="object-cover" src={pro.productImage} />
           <span className="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">39% OFF</span>
-        </a>
+        </Link>
        <div  className="mt-4 px-5 pb-5">
-          <a href="#">
+          <a>
             {/* //name */}
-  <h3 className="text-xl tracking-tight text-slate-900 uppercase font-bold">{pro.productName}</h3>
+  <h3 className="text-xl tracking-tight  text-slate-900 uppercase font-bold">{pro.productName}</h3>
   <h6 className="tracking-tight text-slate-900 capitalize truncate">{pro.productDescription}</h6>
           </a>
           <div className="mt-2 mb-5 flex items-center justify-between">
