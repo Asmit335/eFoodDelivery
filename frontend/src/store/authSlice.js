@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import API from "../http";
+import { API } from "../http";
 
 const statuses = Object.freeze({
   success: "success",
@@ -24,10 +24,15 @@ const authSlice = createSlice({
     setToken(state, action) {
       state.token = action.payload;
     },
+    logOutData(state) {
+      state.data = [];
+      state.token = null;
+      state.status = statuses.success;
+    },
   },
 });
 
-export const { setUser, setStatus, setToken } = authSlice.actions;
+export const { setUser, setStatus, setToken, logOutData } = authSlice.actions;
 export default authSlice.reducer;
 
 export const registerUser = (data) => async (dispatch) => {

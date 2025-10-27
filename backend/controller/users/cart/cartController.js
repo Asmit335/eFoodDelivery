@@ -16,17 +16,29 @@ exports.addToCart = async (req, res) => {
     });
   }
   const user = await User.findById(userId);
-  user.cart.push(id);
+
+  const existingCartItem = user.cart.find((item) => item.product.equals(id));
+  if (existingCartItem) {
+    existingCartItem.quantity += 1;
+  } else {
+    user.cart.push({
+      product: id,
+      quantity: 1,
+    });
+  }
   await user.save();
+
+  const userUpadatedCart = await User.findById(userId).populate("cart.product");
   res.status(200).json({
     message: "Product added to Cart Successfully.",
+    data: userUpadatedCart.cart,
   });
 };
 
 exports.getMyCartItem = async (req, res) => {
   const userId = req.user.id;
   const userData = await User.findById(userId).populate({
-    path: "cart",
+    path: "cart.product",
     select: "-productStatus -createdAt",
   });
   res.status(200).json({
@@ -55,5 +67,25 @@ exports.deleteMyCartItem = async (req, res) => {
   await user.save();
   res.status(200).json({
     message: "Cart Product removed Successfully.",
+  });
+};
+
+exports.updateCartsItem = async (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+  const { quantity } = req.body;
+
+  const user = await User.findById(userId);
+  const cartItem = user.cart.find((item) => item.product.equals(id));
+  if (!cartItem) {
+    return res.status(404).json({
+      message: "No item with that Id.",
+    });
+  }
+  cartItem.quantity = quantity;
+  await user.save();
+  return res.status(200).json({
+    message: "Cart quantity updated Successfully.",
+    data: user.cart,
   });
 };

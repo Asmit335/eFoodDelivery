@@ -1,16 +1,33 @@
 import React from 'react'
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { logOutData } from '../../../store/authSlice';
+import { useEffect } from 'react';
+import { fetchCartItems } from '../../../store/cartSlice';
 
 const Navbar = () => {
+    const navigate=useNavigate()
+    const dispatch=useDispatch()
     const {data:userData}=useSelector((state)=>state.auth)
     const [toggle, setToggle] = useState(false);
-    const productItems = useSelector((state) => state.cart);
+    const {productItems} = useSelector((state) => state.cart);
+
     const toggleClass = () => {
     const closeAfterClick = document.querySelector("#nav-icon4");
     closeAfterClick?.classList?.toggle("open");
   };
+
+  const handleLogout=()=>{
+    dispatch(logOutData())
+    localStorage.removeItem("token")
+    navigate("/login")
+  }
+
+  useEffect(()=>{
+    dispatch(fetchCartItems())
+  },[dispatch])
+
   return (
     <>   <div className="flex justify-between sm:justify-end sm:gap-5 items-center w-full px-8">
           <button
@@ -80,7 +97,7 @@ const Navbar = () => {
             ) : 
             (
             <button className="bg-transparent border text-lg font-semibold border-orange-600 py-1.5 px-5 rounded-md h-max text-white hover:bg-orange-600">
-            <Link to="/logout">LogOut</Link>
+            <span onClick={handleLogout}>LogOut</span>
             </button>
             )
 }        
@@ -103,7 +120,8 @@ const Navbar = () => {
     />
   </svg>
   </Link>
-   <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+  
+  <span className="absolute -top-2 -right-2 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
     {productItems.length}
   </span>
 </div>

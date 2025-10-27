@@ -1,16 +1,26 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {  fetchSingleSelectedProduct } from '../../../store/productSlice'
+import { useNavigate } from 'react-router-dom'
+import { addToCartItem } from '../../../store/cartSlice'
 
 const ProductSingle = ({id:productId}) => {
   const dispatch=useDispatch()
-  const {selectSingleProduct,status}=useSelector((state)=>state.product)
+  const {selectSingleProduct}=useSelector((state)=>state.product)
+  const {data:user}=useSelector((state)=>state.auth)
+  const navigate=useNavigate()
 
   useEffect(()=>{
     window.scrollTo(0, 0);
     dispatch(fetchSingleSelectedProduct(productId))
   },[dispatch,productId])
 
+  const handleAddToCart=()=>{
+    if(user?.length===0 && !localStorage.getItem("token") || localStorage.getItem("token")===0){
+      return navigate("/login")
+    }
+    dispatch(addToCartItem(productId))
+  }
 
 
   return (
@@ -91,8 +101,7 @@ const ProductSingle = ({id:productId}) => {
         </div>
 
         <div className="flex space-x-4 mb-6">
-          <button
-                        className="bg-indigo-600 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+          <button onClick={handleAddToCart} className="bg-indigo-600 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             strokeWproductIdth="1.5" stroke="currentColor" className="size-6">
                             <path strokeLinecap="round" stroke-linejoin="round"

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import API from "../http";
+import { API } from "../http";
 const statuses = Object.freeze({
   success: "success",
   error: "error",
