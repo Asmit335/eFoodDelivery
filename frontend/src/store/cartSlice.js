@@ -28,10 +28,16 @@ const cartSlice = createSlice({
         state.productItems[index].quantity = action.payload.quantity;
       }
     },
+    removeCart(state, action) {
+      const index = state.productItems.findIndex(
+        (item) => item.product._id === action.payload.id
+      );
+      state.productItems.splice(index, 1);
+    },
   },
 });
 
-export const { setItem, setStatus, updateItem } = cartSlice.actions;
+export const { setItem, setStatus, updateItem, removeCart } = cartSlice.actions;
 export default cartSlice.reducer;
 
 export const addToCartItem = (productId) => async (dispatch) => {
@@ -67,6 +73,21 @@ export function updateCartItem(id, quantity) {
       });
       console.log(response);
       dispatch(updateItem({ id, quantity }));
+      dispatch(setStatus(statuses.success));
+    } catch (error) {
+      dispatch(setStatus(statuses.error));
+      console.log(error);
+    }
+  };
+}
+
+export function deleteCartItem(id) {
+  return async function deleteCartThunk(dispatch) {
+    dispatch(setStatus(statuses.loading));
+    try {
+      const response = await API_Authentication.delete(`cart/${id}`);
+      console.log(response.data.data);
+      dispatch(removeCart({ id }));
       dispatch(setStatus(statuses.success));
     } catch (error) {
       dispatch(setStatus(statuses.error));

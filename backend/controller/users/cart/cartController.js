@@ -50,8 +50,8 @@ exports.getMyCartItem = async (req, res) => {
 exports.deleteMyCartItem = async (req, res) => {
   const userId = req.user.id;
   const { id } = req.params;
-
-  if (!id) {
+  const product = await ProductM.findById(id);
+  if (!product) {
     return res.status(400).json({
       message: "Please provide cart product ID",
     });
@@ -63,7 +63,7 @@ exports.deleteMyCartItem = async (req, res) => {
   //     });
   //   }
   const user = await User.findById(userId);
-  user.cart = user.cart.filter((pId) => pId != id);
+  user.cart = user.cart.filter((item) => !item.product.equals(id));
   await user.save();
   res.status(200).json({
     message: "Cart Product removed Successfully.",
