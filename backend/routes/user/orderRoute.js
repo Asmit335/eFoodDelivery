@@ -13,7 +13,7 @@ const router = express.Router();
 router
   .route("/user")
   .get(isAuthenticated, catchAsync(getOrderItem))
-  .post(isAuthenticated, orderedItems);
+  .post(isAuthenticated, catchAsync(orderedItems));
 
 router.route("/cancel").patch(isAuthenticated, catchAsync(cancelOrderStatus));
 

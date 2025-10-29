@@ -1,8 +1,14 @@
 import React, { useState } from 'react'
-import {   useSelector } from "react-redux"
+import {   useDispatch, useSelector } from "react-redux"
 import { useForm } from 'react-hook-form';
+import { createOrder } from '../../store/checkoutSlice';
+import {useNavigate} from "react-router-dom"
+import { useEffect } from 'react';
 
 const CheckOut = () => {
+  const navigate=useNavigate()
+  const dispatch=useDispatch()
+  const {status,data}=useSelector((state)=>state.checkout)
   const [paymentMethod,setPaymentMethod] = useState("COD")
   const {productItems:products}=useSelector((state)=>state.cart)
   const subTotal=products.reduce((sum,item)=>sum+item.product.productPrice*item.quantity,0)
@@ -20,13 +26,27 @@ const CheckOut = () => {
     paymentDetails:{method:paymentMethod},
     shippingAddress:data.shippingAddress
     }
-    console.log(orderDetail);
+    dispatch(createOrder(orderDetail))
   }
   
 
   const handleChange=(e)=>{
     setPaymentMethod(e.target.value)
   }
+
+  const proceedForKhaltiPayment=()=>{
+    const currentOrder=data[data.length-1]
+    if(status==="success" && paymentMethod==="COD"){
+      return alert("Order Placed Successfully.")
+    }
+    if(status==="success" && paymentMethod==="khalti"){
+      return navigate(`/khalti?orderid=${_id}&totalAmount=${totalAmount}`)
+    }
+  }
+  useEffect(()=>{
+    setPaymentMethod(proceedForKhaltiPayment())
+  })
+
   return (
     <>
 <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">
