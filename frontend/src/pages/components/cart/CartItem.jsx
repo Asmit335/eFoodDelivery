@@ -1,6 +1,7 @@
 import React from 'react'
 import {  useDispatch, useSelector } from "react-redux"
 import { deleteCartItem, updateCartItem } from '../../../store/cartSlice'
+import {Link} from "react-router-dom"
 
 const CartItem = () => {
   const dispatch=useDispatch()
@@ -38,9 +39,7 @@ const CartItem = () => {
               <label htmlFor="counter-input" className="sr-only">Choose quantity:</label>
               <div className="flex items-center justify-between md:order-3 md:justify-end">
                 <div className="flex items-center">
-
-
-                  <button onClick={()=>handleQuantityChange(pro.product._id,pro.quantity-1)} type="button" id="decrement-button" data-input-counter-decrement="counter-input" className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
+                  <button onClick={()=>handleQuantityChange(pro.product._id,pro.quantity-1)} type="button" id="decrement-button" disabled={pro.quantity<=1} data-input-counter-decrement="counter-input" className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border border-gray-300 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700">
                     <svg className="h-2.5 w-2.5 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
                       <path  stroke="currentColor"  strokeLinecap="round"  strokeLinejoin="round" strokeWidth="2"  d="M1 1h16"/>
                     </svg>
@@ -215,16 +214,16 @@ const CartItem = () => {
             </dl>
           </div>
 
-          <a href="#" className="flex w-full items-center justify-center rounded-lg bg-primary-700 bg-blue-800 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-primary-800">Proceed to Checkout</a>
+          <Link to="/checkout" className="flex w-full items-center justify-center rounded-lg bg-primary-700 bg-blue-800 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-primary-800">Proceed to Checkout</Link>
 
           <div className="flex items-center justify-center gap-2">
             <span className="text-sm font-normal text-gray-500 dark:text-gray-400"> or </span>
-            <a href="#" title="" className="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-blue-500 text-blue-400">
+            <Link to="/" title="" className="inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline hover:no-underline dark:text-blue-500 text-blue-400">
               Continue Shopping
               <svg className="h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
               </svg>
-            </a>
+            </Link>
           </div>
         </div>
 

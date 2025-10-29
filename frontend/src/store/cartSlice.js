@@ -32,7 +32,9 @@ const cartSlice = createSlice({
       const index = state.productItems.findIndex(
         (item) => item.product._id === action.payload.id
       );
-      state.productItems.splice(index, 1);
+      if (index !== -1) {
+        state.productItems.splice(index, 1);
+      }
     },
   },
 });
@@ -44,6 +46,7 @@ export const addToCartItem = (productId) => async (dispatch) => {
   dispatch(setStatus(statuses.loading));
   try {
     const response = await API_Authentication.post(`/cart/${productId}`);
+    // dispatch(setItem([...state.productItems, response.data.data]));
     dispatch(setItem(response.data.data));
     dispatch(setStatus(statuses.success));
   } catch (error) {

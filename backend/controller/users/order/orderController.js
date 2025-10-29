@@ -2,9 +2,16 @@ const OrderM = require("../../../model/orderModel");
 
 exports.orderedItems = async (req, res) => {
   const userId = req.user.id;
-  const { item, shippingAddress, paymentStatus, totalAmount } = req.body;
+  const { item, shippingAddress, paymentStatus, totalAmount, phoneNumber } =
+    req.body;
 
-  if (!item || item.length === 0 || !shippingAddress || !paymentStatus) {
+  if (
+    !item ||
+    item.length === 0 ||
+    !shippingAddress ||
+    !paymentStatus ||
+    !phoneNumber
+  ) {
     return res.status(400).json({ message: "Please fill all the details ." });
   }
 
@@ -14,6 +21,7 @@ exports.orderedItems = async (req, res) => {
     shippingAddress,
     paymentStatus,
     totalAmount,
+    phoneNumber,
   });
   res.status(200).json({
     message: "Order Created Successfully.",
