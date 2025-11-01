@@ -24,7 +24,7 @@ exports.khaltiPayment = async (req, res) => {
   }
 
   const data = {
-    return_url: "http://localhost:3000/payment/success",
+    return_url: "http://localhost:5173/success",
     purchase_order_id: orderId,
     amount: amount * 100, //calculate in paisa such as if you enter 1000 in paisa == Rs10
     website_url: "http://localhost:3000",
@@ -43,17 +43,15 @@ exports.khaltiPayment = async (req, res) => {
   const orderstat = await OrderM.findById(orderId);
   orderstat.paymentStatus.pidx = response.data.pidx;
   await orderstat.save();
-
   res.status(200).json({
     message: "Payment initiated Successfully.",
-    payment_url: response.data.payment_url,
+    paymentUrl: response.data.payment_url,
   });
-  console.log(response.data);
 };
 
 exports.VerifyPidx = async (req, res) => {
-  const userId = req.user.id;
-  const pidx = req.query.pidx;
+  const userid = req.user.id;
+  const pidx = req.body.pidx;
   const response = await axios.post(
     "https://dev.khalti.com/api/v2/epayment/lookup/",
     { pidx },
@@ -65,20 +63,16 @@ exports.VerifyPidx = async (req, res) => {
   );
 
   if (response.data.status === "Completed") {
-    //database modification
     const orders = await OrderM.find({ "paymentStatus.pidx": pidx });
     orders[0].paymentStatus.method = "Khalti";
     orders[0].paymentStatus.status = "paid";
     await orders[0].save();
-    const user = await User.findById(userId);
+    const user = await User.findById(userid);
     user.cart = [];
     await user.save();
-    res.redirect("http://localhost:3000");
-    // res.redirect("https://www.asmitkhanal.com.np");
+    res.status(200).json({
+      message: "Payment Verified Successfully.",
+      data: response.data,
+    });
   }
-
-  res.status(200).json({
-    message: "Payment Verifed Successfully.",
-    data: response.data,
-  });
 };

@@ -2,12 +2,11 @@ import React from "react"
 // import { useEffect } from "react"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
 import { loginUser } from "../../../store/authSlice"
+import Loader from "../../../global/loader/Loader"
 export default function Login() {
   const {data,status}=useSelector((state)=>state.auth)
   console.log(data);
-  const navigate=useNavigate()
   const dispatch=useDispatch()
   const [userData,setUserData]=useState({
     email:"",
@@ -25,7 +24,7 @@ export default function Login() {
   const handleSubmit=(e)=>{
     e.preventDefault()
     dispatch(loginUser(userData))
-    navigate("/")
+    window.location.href="/"
     
     if(status==="error"){
     alert("Something went Wrong. Please try again.")

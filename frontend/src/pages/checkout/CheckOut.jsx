@@ -2,11 +2,10 @@ import React, { useState } from 'react'
 import {   useDispatch, useSelector } from "react-redux"
 import { useForm } from 'react-hook-form';
 import { createOrder } from '../../store/checkoutSlice';
-import {useNavigate} from "react-router-dom"
 import { useEffect } from 'react';
+import { API_Authentication } from '../../http';
 
 const CheckOut = () => {
-  const navigate=useNavigate()
   const dispatch=useDispatch()
   const {status,data}=useSelector((state)=>state.checkout)
   const [paymentMethod,setPaymentMethod] = useState("COD")
@@ -40,12 +39,28 @@ const CheckOut = () => {
       return alert("Order Placed Successfully.")
     }
     if(status==="success" && paymentMethod==="khalti"){
-      return navigate(`/khalti?orderid=${_id}&totalAmount=${totalAmount}`)
+      const {totalAmount,_id:orderid}=data[data.length-1]
+      handleKhalti(orderid,totalAmount)
     }
+    console.log(currentOrder);
+    
   }
   useEffect(()=>{
-    setPaymentMethod(proceedForKhaltiPayment())
-  })
+    proceedForKhaltiPayment()
+  },[status,data])
+
+  const handleKhalti=async(orderid,totalAmount)=>{
+    try {
+      const response=await API_Authentication.post(`/payment`, { orderId: orderid, amount: totalAmount })
+
+      if(response.status===200){
+        window.location.href=response.data.paymentUrl
+      }
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -328,9 +343,19 @@ const CheckOut = () => {
           </div>
         </div>
 
-        <div className="space-y-3">
-          <button type="submit" className="flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-blue-700 dark:focus:ring-primary-800">Proceed to Payment</button>
+      {
+        paymentMethod==="COD" ? (
+             <div className="space-y-3">
+          <button type="submit" className="flex w-full items-center justify-center rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-blue-700 dark:focus:ring-primary-800">Proceed to Order</button>
         </div>
+        ):(
+           <div className="space-y-3">
+          <button type="submit" className="flex w-full items-center justify-center rounded-lg bg-purple-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4  focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-purple-700 dark:focus:ring-primary-800">Pay with Khalti</button>
+        </div>
+        )
+      }
+
+       
       </div>
     </div>
   </form>

@@ -36,10 +36,14 @@ const cartSlice = createSlice({
         state.productItems.splice(index, 1);
       }
     },
+    emptyCart(state, action) {
+      state.productItems = [];
+    },
   },
 });
 
-export const { setItem, setStatus, updateItem, removeCart } = cartSlice.actions;
+export const { setItem, setStatus, updateItem, removeCart, emptyCart } =
+  cartSlice.actions;
 export default cartSlice.reducer;
 
 export const addToCartItem = (productId) => async (dispatch) => {

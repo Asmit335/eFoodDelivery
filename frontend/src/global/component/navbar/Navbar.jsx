@@ -79,9 +79,9 @@ const Navbar = () => {
             <div className="capitalize text-white text-lg font-semibold hover:text-orange-600 cursor-pointer">
               <Link to="/">Home</Link>
             </div>
-            <div className="capitalize cursor-pointer text-lg font-semibold text-white hover:text-orange-600">
-              Menu
-            </div>
+            <Link to="/profile" className="capitalize cursor-pointer text-lg font-semibold text-white hover:text-orange-600">
+              Profile
+            </Link>
             
           {
           (userData?.length === 0 && 
@@ -102,7 +102,8 @@ const Navbar = () => {
             )
 }        
 </div>
-
+{
+  productItems.length !==0 && (
    <div className="relative">
     <Link to="/cart">
       <svg
@@ -120,11 +121,13 @@ const Navbar = () => {
     />
   </svg>
   </Link>
-  
   <span className="absolute -top-2 -right-2 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
     {productItems.length}
   </span>
 </div>
+  )
+}
+
 
           <button className="block sm:hidden bg-transparent border border-orange-600 py-1.5 px-5 rounded-md h-max text-white hover:bg-orange-600">
           <Link to="/login">Login</Link>

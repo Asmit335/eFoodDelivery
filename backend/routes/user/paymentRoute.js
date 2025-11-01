@@ -9,6 +9,6 @@ const {
 } = require("../../controller/payment/khaltipaymentController");
 
 router.route("").post(isAuthenticated, catchAsync(khaltiPayment));
-router.route("/success").get(isAuthenticated, catchAsync(VerifyPidx));
+router.route("/khaltiverify").post(isAuthenticated, catchAsync(VerifyPidx));
 
 module.exports = router;

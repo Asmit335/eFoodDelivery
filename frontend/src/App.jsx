@@ -11,6 +11,10 @@ import Register from './pages/components/register/Register';
 import Navbar from './global/component/navbar/Navbar';
 import ProductDetails from './pages/productDetail/ProductDetails';
 import CheckOut from './pages/checkout/CheckOut';
+import Sucess from './pages/khaltisucess/Sucess';
+import UserProfile from './pages/profile/UserProfile';
+import MyOrders from './pages/myOrders/MyOrders';
+import MyOrderQrs from './pages/myOrdersQrs/MyOrderQrs';
 
 function App() {
   return (
@@ -27,6 +31,10 @@ function App() {
       <Route path='/register' element={<Register/>}/>
       <Route path='/product/:id' element={<ProductDetails/>}/>
       <Route path='/checkout' element={<CheckOut/>}/>
+      <Route path='/success' element={<Sucess/>}/>
+      <Route path='/profile' element={<UserProfile/>}/>
+      <Route path='/myorders' element={<MyOrders/>}/>
+      <Route path='/myorderqrs' element={<MyOrderQrs/>}/>
       </Routes>
       <Footer/>
         </BrowserRouter>
