@@ -12,7 +12,7 @@ const checkOutSlice = createSlice({
   initialState: {
     data: [],
     status: statuses.success,
-    orders: null,
+    orders: [],
   },
   reducers: {
     setOrder(state, action) {

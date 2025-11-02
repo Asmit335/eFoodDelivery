@@ -1,13 +1,24 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchOrder } from '../../store/checkoutSlice'
 
 const MyOrders = () => {
+    const [selectedItem, setSelectedItem] = useState("all")
+    const [date, setDate] = useState("")
+    const [searchTerm, setSearchTerm] = useState("")
     const dispatch=useDispatch()
-    const {orders}=useSelector((state)=>state.checkout)
+    const {orders}=useSelector((state)=>state.checkout) 
     useEffect(()=>{
         dispatch(fetchOrder())
     },[])
+
+    const filterItem= orders?.filter((order)=>selectedItem==="all" || order.orderStatus=== selectedItem)
+    .filter((order)=>
+    order._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    order.paymentStatus.method.toLowerCase().includes(searchTerm.toLowerCase()) 
+    )
+    .filter((order)=>date==="" || new Date(order.createdAt).toLocaleDateString()===new Date(date).toLocaleDateString())
+
   return (
     <>
     <div className="antialiased font-sans bg-gray-200 pt-20">
@@ -21,6 +32,7 @@ const MyOrders = () => {
            
                     <div className="relative">
                         <select
+                            onChange={(e)=>setSelectedItem(e.target.value)}
                             className="appearance-none h-full rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500">
                             <option value='all'>all</option>
                             <option value='pending'>pending</option>
@@ -46,54 +58,108 @@ const MyOrders = () => {
                         </svg>
                     </span>
                     <input placeholder="Search"
+                    value={searchTerm}
+                    onChange={(e)=>setSearchTerm(e.target.value)}
                         className="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
                 </div>
                 <div className="block relative">
                 
                     <input placeholder="Search"
                     type='date'
+                    value={date}
+                    onChange={(e)=>setDate(e.target.value)}
                         className="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none" />
                 </div>
             </div>
             <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
                 <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-                    <table className="min-w-full leading-normal">
-                        <thead>
-                            <tr>
-                                <th
-                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    OrderId
-                                </th>
-                     
-                                <th
-                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Total Amt
-                                </th>
-                                <th
-                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Payment Status
-                                </th>
-                                <th
-                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                   Order Status
-                                </th>
-                                <th
-                                    className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                    Ordered At
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                    {
-                        orders.map((pro)=>{
-                            return(
-                                <table className="" key={pro}>{orders._id}</table>
-                            )
-                        })
-                    }
-                
-                        </tbody>
-                    </table>
+
+                    {/* //table items */}
+<table className="min-w-full leading-normal border border-gray-300 rounded-lg shadow-md">
+  <thead>
+    <tr>
+      <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+        Order ID
+      </th>
+      <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+        Total Amount
+      </th>
+      <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+        Payment Status
+      </th>
+      <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+        Order Status
+      </th>
+      <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+        Date
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {filterItem && filterItem.length > 0 ? (
+      filterItem.map((order) => (
+        <tr key={order._id} className="hover:bg-gray-50 transition">
+          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-gray-900">
+           <Link to={`/myorders/${order._id}`}>{order._id}</Link> 
+          </td>
+
+          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-gray-900">
+            Rs. {order.totalAmount}
+          </td>
+
+          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <span
+              className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                order.paymentStatus?.status === "paid"
+                  ? "bg-green-100 text-green-800"
+                  : order.paymentStatus?.status === "pending"
+                  ? "bg-yellow-100 text-yellow-800"
+                  : "bg-red-100 text-red-800"
+              }`}
+            >
+              {order.paymentStatus?.status.toUpperCase()} ({order.paymentStatus?.method})
+            </span>
+          </td>
+
+          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <span
+              className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                order.orderStatus === "delivered"
+                  ? "bg-green-100 text-green-800"
+                  : order.orderStatus === "pending"
+                  ? "bg-yellow-100 text-yellow-800"
+                  : order.orderStatus === "ontheway"
+                  ? "bg-blue-100 text-blue-800"
+                  : order.orderStatus === "preparation"
+                  ? "bg-purple-100 text-purple-800"
+                  : "bg-red-100 text-red-800"
+              }`}
+            >
+              {order.orderStatus.toUpperCase()}
+            </span>
+          </td>
+
+          <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm text-gray-700">
+            {new Date(order.createdAt).toLocaleDateString()}
+          </td>
+        </tr>
+      ))
+    ) : (
+      <tr>
+        <td
+          colSpan="5"
+          className="px-5 py-5 text-center text-gray-500 bg-white border-b border-gray-200"
+        >
+          No orders found
+        </td>
+      </tr>
+    )}
+  </tbody>
+</table>
+
+
+
                     <div
                         className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
                         <span className="text-xs xs:text-sm text-gray-900">

@@ -15,6 +15,7 @@ import Sucess from './pages/khaltisucess/Sucess';
 import UserProfile from './pages/profile/UserProfile';
 import MyOrders from './pages/myOrders/MyOrders';
 import MyOrderQrs from './pages/myOrdersQrs/MyOrderQrs';
+import OrderDetails from './pages/orderDetails/OrderDetails';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
       <Route path='/success' element={<Sucess/>}/>
       <Route path='/profile' element={<UserProfile/>}/>
       <Route path='/myorders' element={<MyOrders/>}/>
+      <Route path='/myorders/:id' element={<OrderDetails/>}/>
       <Route path='/myorderqrs' element={<MyOrderQrs/>}/>
       </Routes>
       <Footer/>
