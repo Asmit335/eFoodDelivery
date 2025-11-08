@@ -16,6 +16,8 @@ import UserProfile from './pages/profile/UserProfile';
 import MyOrders from './pages/myOrders/MyOrders';
 import MyOrderQrs from './pages/myOrdersQrs/MyOrderQrs';
 import OrderDetails from './pages/orderDetails/OrderDetails';
+import AdminDashboard from './pages/admin/dashboard/AdminDashboard';
+import ProtectedRoute from './pages/ProtectedRoute';
 
 function App() {
   return (
@@ -37,6 +39,8 @@ function App() {
       <Route path='/myorders' element={<MyOrders/>}/>
       <Route path='/myorders/:id' element={<OrderDetails/>}/>
       <Route path='/myorderqrs' element={<MyOrderQrs/>}/>
+      <Route path='/admin' 
+      element={<ProtectedRoute><AdminDashboard/></ProtectedRoute>}/>
       </Routes>
       <Footer/>
         </BrowserRouter>

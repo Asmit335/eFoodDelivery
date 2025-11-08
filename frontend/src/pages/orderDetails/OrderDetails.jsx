@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { APIAuthenticated } from '../../http'
+import { API_Authentication } from '../../http'
 
 
 const OrderDetails = () => {
@@ -11,7 +11,7 @@ const OrderDetails = () => {
     const [filteredOrder] = orders.filter((order)=>order._id === id)
     const cancelOrder = async()=>{
       try {
-        const response = await APIAuthenticated.patch("/orders/cancel",{id})
+        const response = await API_Authentication.patch("/orders/cancel",{id})
         console.log(response.data)
         if(response.status == 200){
             navigate("/myorders")
@@ -23,7 +23,7 @@ const OrderDetails = () => {
 
     const deleteOrder = async()=>{
         try {
-          const response = await APIAuthenticated.delete("/orders/" + id)
+          const response = await API_Authentication.delete("/orders/" + id)
         
           if(response.status == 200){
               navigate("/myorders")

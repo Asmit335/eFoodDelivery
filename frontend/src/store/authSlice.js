@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { API } from "../http";
+import { API, API_Authentication } from "../http";
 
 const statuses = Object.freeze({
   success: "success",
@@ -55,8 +55,25 @@ export const loginUser = (data) => async (dispatch) => {
     dispatch(setToken(response.data.token));
     dispatch(setStatus(statuses.success));
     localStorage.setItem("token", response.data.token);
+    window.location.href = "/";
   } catch (error) {
     dispatch(setStatus(statuses.Error));
     console.log(error);
   }
 };
+
+export function fetchProfile() {
+  return async function fetchProfileThunk(dispatch) {
+    dispatch(setStatus(statuses.loading));
+    try {
+      const response = await API_Authentication.get("/profile");
+      dispatch(setUser(response.data.data));
+      console.log(response.data.data);
+
+      dispatch(setStatus(statuses.success));
+    } catch (error) {
+      dispatch(setStatus(statuses.error));
+      console.log(error);
+    }
+  };
+}
